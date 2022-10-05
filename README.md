@@ -1,24 +1,7 @@
-# job-listing
+# Frontend Mentor Challenge
 
-## Project setup
+### Hosted on vercel
 ```
-yarn install
-```
-
-### Compiles and hot-reloads for development
-```
-yarn serve
+https://job-listing-ashen.vercel.app/
 ```
 
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
