@@ -2,9 +2,10 @@
 <template>
   <HeaderComponent />
 
-  <main :class="`flex flex-col gap-4 md:gap-16 items-center py-20 ${languagesSelected.length > 2 ? 'md:pt-36' : 'md:pt-24'} ${languagesSelected.length > 4 ? 'md:pt-48' : ''} relative`">
-    <div v-if="languagesSelected.length > 0"
-      class="shadow-md -top-[30px] absolute bg-white w-[70vw] sm:w-[90vw] h-[60px] md:h-auto md:py-6 rounded-md flex items-center justify-between gap-8 px-8">
+  <main ref="root" :class="`flex flex-col gap-4 md:gap-16 items-center py-20 relative`">
+    <div  v-if="languagesSelected.length > 0"
+      :class="`
+      inputSelects shadow-md -top-[30px]  absolute bg-white w-[70vw] sm:w-[90vw] h-[60px] md:h-auto md:py-6 rounded-md flex items-center justify-between gap-8 px-8`">
       <div class="flex gap-4 flex-wrap">
         <div class="flex" v-for="badge in languagesSelected" :key="badge">
           <BadgeComponent :badge="badge" class="rounded-r-none" />
@@ -25,7 +26,7 @@
       </p>
 
     </div>
-    <CardComponent v-for="card in cards" :card="card" :key="card.id" @emit-children="addLanguage" />
+    <CardComponent v-for="card in cards" :card="card" :key="card.id" @emit-children="addLanguage" :languages="languagesSelected" />
   </main>
 
 </template>
@@ -34,7 +35,7 @@
 /* eslint-disable */
 import HeaderComponent from './components/HeaderComponent.vue';
 import CardComponent from './components/CardComponent.vue';
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch, nextTick } from 'vue';
 import BadgeComponent from './components/BadgeComponent.vue';
 
 const arrInitial = [
@@ -190,17 +191,29 @@ const arrInitial = [
   }
 ]
 const cards = ref(arrInitial)
-
+let root = ref();
+let inputSelect = ref();
 let languagesSelected = ref([]);
 
-watch(languagesSelected, () => {
+const handleInput = () => {
+  inputSelect.value = root.value.querySelector('.inputSelects');
+  console.log(inputSelect.value)
+  console.log(inputSelect.value.getBoundingClientRect().height)
+  inputSelect.value.style.top = `-${inputSelect.value.getBoundingClientRect().height / 2}px`
+  root.value.style.paddingTop = `${(inputSelect.value.getBoundingClientRect().height / 2) + 50}px`
+}
+
+watch(languagesSelected, async() => {
   if(languagesSelected.value.length == 0){
     cards.value = arrInitial;
+    root.value.style.paddingTop = "5rem"
     return;
   }
+  await nextTick();
+  handleInput();
   cards.value = arrInitial.filter(card => {
     let skills = [...card.languages, ...card.tools];
-    return skills.some((currentValue) => languagesSelected.value.includes(currentValue))
+    return languagesSelected.value.every((currentValue) => skills.includes(currentValue))
   });
 }, {
   deep: true
@@ -219,5 +232,9 @@ const clearArr = () => {
   console.log('rt')
   languagesSelected.value = [];
 }
+
+
+
+
 
 </script>

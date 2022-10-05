@@ -1,7 +1,6 @@
 <template>
     <main class="w-[70vw] sm:w-[90vw] h-[140px] shadow-lg bg-white rounded-md px-10 md:h-auto md:py-8 md:pt-10 relative flex items-center ">
         <span v-if="props.card.featured" class="bg-primary-dark-cyan-100 absolute w-1 h-full left-0 top-0 md:rounded-l-full"></span>
-
         <div class="flex justify-between flex-1 gap-4 md:flex-col">
             <div class="flex gap-8 items-center relative">
                 <img class="h-max md:absolute md:h-[60px] md:-top-[70px]" :src="require(`../assets/images/${props.card.logo}`)" :alt="`${props.card.logo}`">
@@ -28,21 +27,21 @@
             <div class="md:pt-4  flex items-center gap-4 flex-wrap justify-end md:justify-start relative">
                 <span class="md:block hidden h-[0.05rem] w-full absolute top-0 left-0 bg-neutral-300"></span>
                 <BadgeComponent 
-                    class="hover:bg-primary-dark-cyan-100 hover:text-white duration-300 cursor-pointer" 
+                    :class="` ${languages.includes(badge) ? 'bg-primary-dark-cyan-100 text-white'  : ''}
+                    hover:bg-primary-dark-cyan-100 hover:text-white duration-300 cursor-pointer`" 
                     v-for="badge in props.card.languages" 
                     :key="badge"  
                     :badge="badge"
                     @click="$emit('emitChildren', badge)"
-
                  />
 
                  <BadgeComponent 
-                    class="hover:bg-primary-dark-cyan-100 hover:text-white duration-300 cursor-pointer" 
+                    :class="`${languages.includes(badge) ? 'bg-primary-dark-cyan-100 text-white'  : ''}
+                    hover:bg-primary-dark-cyan-100 hover:text-white duration-300 cursor-pointer`" 
                     v-for="badge in props.card.tools" 
                     :key="badge"  
                     :badge="badge"
                     @click="$emit('emitChildren', badge)"
-
                  />
 
             </div>
@@ -53,15 +52,18 @@
 
 <script setup>
     
-import { defineProps } from 'vue'
+import { defineProps, onBeforeMount } from 'vue'
 import BadgeComponent from './BadgeComponent.vue'
 
 const props = defineProps({
     card: Array,
-    languagesSelected: Array
+    languages: Array
 });
 
+onBeforeMount(() => {
+   
 
+})
 
 
 </script>
