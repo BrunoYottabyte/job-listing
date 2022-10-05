@@ -1,47 +1,8 @@
-
-<template>
-  <HeaderComponent />
-
-  <main :class="`flex flex-col gap-4 md:gap-16 items-center py-20 ${languagesSelected.length > 2 ? 'md:pt-36' : 'md:pt-24'} ${languagesSelected.length > 4 ? 'md:pt-48' : ''} relative`">
-    <div v-if="languagesSelected.length > 0"
-      class="shadow-md -top-[30px] absolute bg-white w-[70vw] sm:w-[90vw] h-[60px] md:h-auto md:py-6 rounded-md flex items-center justify-between gap-8 px-8">
-      <div class="flex gap-4 flex-wrap">
-        <div class="flex" v-for="badge in languagesSelected" :key="badge">
-          <BadgeComponent :badge="badge" class="rounded-r-none" />
-          <div @click="removeLanguage(badge)"
-            class="cursor-pointer px-2 py-1 rounded-r-md bg-primary-dark-cyan-100 flex items-center hover:bg-neutral-very-dark-cyan-100 transition-colors duration-300 ">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" fill="#FFFFFF" viewBox="0 0 256 256">
-              <rect width="256" height="256" fill="none"></rect>
-              <line x1="200" y1="56" x2="56" y2="200" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round"
-                stroke-width="40"></line>
-              <line x1="200" y1="200" x2="56" y2="56" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round"
-                stroke-width="40"></line>
-            </svg>
-          </div>
-        </div>
-      </div>
-      <p @click="clearArr" class="text-primary-dark-cyan-100 hover:underline transition-transform duration-300 cursor-pointer">
-        Clear
-      </p>
-
-    </div>
-    <CardComponent v-for="card in cards" :card="card" :key="card.id" @emit-children="addLanguage" />
-  </main>
-
-</template>
-
-<script setup>
-/* eslint-disable */
-import HeaderComponent from './components/HeaderComponent.vue';
-import CardComponent from './components/CardComponent.vue';
-import { ref, watch } from 'vue';
-import BadgeComponent from './components/BadgeComponent.vue';
-
-const arrInitial = [
+[
   {
     "id": 1,
     "company": "Photosnap",
-    "logo": "photosnap.svg",
+    "logo": "./images/photosnap.svg",
     "new": true,
     "featured": true,
     "position": "Senior Frontend Developer",
@@ -56,7 +17,7 @@ const arrInitial = [
   {
     "id": 2,
     "company": "Manage",
-    "logo": "manage.svg",
+    "logo": "./images/manage.svg",
     "new": true,
     "featured": true,
     "position": "Fullstack Developer",
@@ -71,7 +32,7 @@ const arrInitial = [
   {
     "id": 3,
     "company": "Account",
-    "logo": "account.svg",
+    "logo": "./images/account.svg",
     "new": true,
     "featured": false,
     "position": "Junior Frontend Developer",
@@ -86,7 +47,7 @@ const arrInitial = [
   {
     "id": 4,
     "company": "MyHome",
-    "logo": "myhome.svg",
+    "logo": "./images/myhome.svg",
     "new": false,
     "featured": false,
     "position": "Junior Frontend Developer",
@@ -101,7 +62,7 @@ const arrInitial = [
   {
     "id": 5,
     "company": "Loop Studios",
-    "logo": "loop-studios.svg",
+    "logo": "./images/loop-studios.svg",
     "new": false,
     "featured": false,
     "position": "Software Engineer",
@@ -116,7 +77,7 @@ const arrInitial = [
   {
     "id": 6,
     "company": "FaceIt",
-    "logo": "faceit.svg",
+    "logo": "./images/faceit.svg",
     "new": false,
     "featured": false,
     "position": "Junior Backend Developer",
@@ -131,7 +92,7 @@ const arrInitial = [
   {
     "id": 7,
     "company": "Shortly",
-    "logo": "shortly.svg",
+    "logo": "./images/shortly.svg",
     "new": false,
     "featured": false,
     "position": "Junior Developer",
@@ -146,7 +107,7 @@ const arrInitial = [
   {
     "id": 8,
     "company": "Insure",
-    "logo": "insure.svg",
+    "logo": "./images/insure.svg",
     "new": false,
     "featured": false,
     "position": "Junior Frontend Developer",
@@ -161,7 +122,7 @@ const arrInitial = [
   {
     "id": 9,
     "company": "Eyecam Co.",
-    "logo": "eyecam-co.svg",
+    "logo": "./images/eyecam-co.svg",
     "new": false,
     "featured": false,
     "position": "Full Stack Engineer",
@@ -170,13 +131,13 @@ const arrInitial = [
     "postedAt": "3w ago",
     "contract": "Full Time",
     "location": "Worldwide",
-    "languages": ["JavaScript", "Python", "PHP", "React Native"],
+    "languages": ["JavaScript", "Python"],
     "tools": ["Django"]
   },
   {
     "id": 10,
     "company": "The Air Filter Company",
-    "logo": "the-air-filter-company.svg",
+    "logo": "./images/the-air-filter-company.svg",
     "new": false,
     "featured": false,
     "position": "Front-end Dev",
@@ -189,35 +150,3 @@ const arrInitial = [
     "tools": ["React", "Sass"]
   }
 ]
-const cards = ref(arrInitial)
-
-let languagesSelected = ref([]);
-
-watch(languagesSelected, () => {
-  if(languagesSelected.value.length == 0){
-    cards.value = arrInitial;
-    return;
-  }
-  cards.value = arrInitial.filter(card => {
-    let skills = [...card.languages, ...card.tools];
-    return skills.some((currentValue) => languagesSelected.value.includes(currentValue))
-  });
-}, {
-  deep: true
-})
-
-const addLanguage = (item) => {
-  if (!languagesSelected.value.includes(item)) languagesSelected.value.push(item);
-}
-
-const removeLanguage = (item) => {
-  console.log(item);
-  languagesSelected.value.splice(languagesSelected.value.findIndex(i => i == item), 1);
-}
-
-const clearArr = () => {
-  console.log('rt')
-  languagesSelected.value = [];
-}
-
-</script>
